@@ -14,13 +14,16 @@ csv_filter.columns = ["aveOralF","aveOralM", "Gender", "Age", "Ethnicity", "T_at
 
 #csv_filter = csv_filter.replace(' ', np.non)
 csv_filter["Cosmetics"] = csv_filter["Cosmetics"].where(pd.notna(csv_filter["Cosmetics"]), None)
-csv_filter.to_csv('FLIR_groups1and2_replace.csv', index=False)
-#print(type(csv_filter['Cosmetics'][0]))
+csv_filter.to_csv('FLIR_groups1and2_replace.csv',  sep=';', decimal=',',index=False)
+
+#csv_filter['aveOralF']=csv_filter['aveOralF'].astype(float)
+print(type(csv_filter['aveOralF'][0]))
 
 def informacion(dat):
     dat = dat.dropna()
     lista = []
-    lista.append(np.mean(dat)) #media
+    lista.append(np.mean(dat.astype(float))) #media
+    #funciono para la media, toca revisar los demas
     lista.append(np.median(dat)) #mediana
     moda_result = stats.mode(dat)  # Moda
     lista.append(moda_result.mode[0] if len(moda_result.mode) > 0 else np.nan)  # Moda
@@ -34,7 +37,7 @@ def informacion(dat):
     lista.append((np.mean(np.abs(dat-np.median(dat)))/np.median(dat)*100)) #CVM
     return lista
 
-resultados = {
+resultados = {'': ["Media", "Mediana", "Moda", "SD", "MAD", "Varianza", "IQR", "CV", "CVM"],    
     'aveOralF': informacion(csv_filter['aveOralF']),
     'aveOralM': informacion(csv_filter['aveOralM']),
     'Gender': informacion(csv_filter['Gender']),
@@ -44,29 +47,10 @@ resultados = {
     'Humidity': informacion(csv_filter['Humidity']),
     'Cosmetics': informacion(csv_filter['Cosmetics'])
 }
+
 df = pd.DataFrame(resultados)
 print(df)
 
-# analisis_aveOralF = informacion(csv_filter['aveOralF'])
-# analisis_aveOralM = informacion(csv_filter['aveOralM'])
-# analisis_Gender = informacion(csv_filter['Gender'])
-# analisis_Age = informacion(csv_filter['Age'])
-# analisis_Ethnicity = informacion(csv_filter['Ethnicity'])
-# analisis_T_atm = informacion(csv_filter['T_atm'])
-# analisis_Humidity = informacion(csv_filter['Humidity'])
-# analisis_Cosmetics = informacion(csv_filter['Cosmetics'])
-
-# df = pd.DataFrame({
-#     'Media': analisis_aveOralF[0],
-#     'Mediana': analisis_aveOralF[1],
-#     'Moda': analisis_aveOralF[2],
-#     'SD': analisis_aveOralF[3],
-#     'MAD': analisis_aveOralF[4],
-#     'Varianza': analisis_aveOralF[5],
-#     'IQR': analisis_aveOralF[6],
-#     'CV': analisis_aveOralF[7],
-#     'CVM': analisis_aveOralF[8]
-# })
 
 
 
