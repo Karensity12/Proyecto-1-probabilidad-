@@ -5,6 +5,8 @@ import numpy as np
 import seaborn as sns
 from scipy import stats
 
+#archivo terminado
+
 def convertir_NAN_MEAN(nombres,df):
     """Convierte los valores NaN de una columna a su media."""
     for i in nombres:
